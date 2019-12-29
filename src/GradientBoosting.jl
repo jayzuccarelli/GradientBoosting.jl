@@ -1,4 +1,33 @@
-function Gradient_Boosting(y_in, X_in, lr, max_depth, number_of_trees)
+module GradientBoosting
+
+using DecisionTree
+
+function random_subset_selection(X_imp, y_imp, k, index_rm)
+
+    n = size(X_imp,1)
+    p = size(X_imp,2)
+
+    # Train arrays
+    train_Xs = Array{Float64}(undef, 0, p)
+    train_ys = Array{Float64}(undef, 0)
+
+    # Randomize
+    shuffleray = hcat(y_imp, X_imp, index_rm)
+    shuffleray = shuffleray[shuffle(1:end), :]
+    y_shuffled = shuffleray[:,1]
+    X_shuffled = shuffleray[:,2:(end-1)]
+    index_shuffled = shuffleray[:,end]
+
+    train_ys = y_shuffled[1:k]
+    train_Xs = X_shuffled[1:k,:]
+    index_selected = index_shuffled[1:k]
+
+    sanity_check = (size(train_Xs, 1) == k)
+
+    return train_Xs, train_ys, index_selected, sanity_check
+end
+
+function fit(y_in, X_in, lr, max_depth, number_of_trees)
 
     yi = deepcopy(y_in)
     Xi = deepcopy(X_in)
@@ -21,9 +50,6 @@ function Gradient_Boosting(y_in, X_in, lr, max_depth, number_of_trees)
     
     # Number of Iterations
     iters = number_of_trees
-
-    # Plot the Data
-    #Plots.scatter(X,y, label="Data")
     
     # Array for storing all trees in the final model
     finalmodels = Array{Union{Node{Float64,Float64},Leaf{Float64}}}(undef, iters,1)
@@ -54,13 +80,29 @@ function Gradient_Boosting(y_in, X_in, lr, max_depth, number_of_trees)
         
         #record predictions for convergence plot
         predictions[i,:] = predf
-        
-        # Plot Model Fit of Some Iterations
-        #if i == iters #i == 1 || i == iters/2 || i == iters
-        #    plot!(X,predf, label="Model Fit (Iterations="*string(i)*")")
-        #end
+
     end
-    #plot!()
+
     return predf, finalmodels, predictions
+
+end
+
+function predict(y_in, X_in, lr, arrayofmodels)
+    yi = deepcopy(y_in)
+    Xi = deepcopy(X_in)
+
+    n = size(Xi, 1)
+
+    # Initialize Predictions with Average
+    predf = reshape(zeros(n), :, 1);
+    predf .= mean(yi);
+
+    for i = 1:size(arrayofmodels,1)
+        model = arrayofmodels[i]
+        predi = apply_tree(model, Xi)
+        predf .+= lr*predi
+    end
+    return predf
+end
 
 end
