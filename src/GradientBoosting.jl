@@ -1,6 +1,7 @@
 module GradientBoosting
 
 using DecisionTree
+using StatsBase
 
 function random_subset_selection(X_imp, y_imp, k, index_rm)
 
@@ -104,5 +105,7 @@ function predict(y_in, X_in, lr, arrayofmodels)
     end
     return predf
 end
+
+export fit, predict
 
 end
