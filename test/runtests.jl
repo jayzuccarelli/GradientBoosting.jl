@@ -13,7 +13,7 @@ include("../src/GradientBoosting.jl")
 
 
 data = CSV.read("test/forestfires.csv", header = false)
-ys = convert(Matrix, data)[:,end];
+ys = convert(Matrix, data)[:,end]
 Xs = convert(Matrix, data)[:,1:end-1]
 
 shuffleray = hcat(ys,Xs) #combine into single matrix

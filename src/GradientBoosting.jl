@@ -28,10 +28,13 @@ end
 
 function fit(y_in, X_in, lr, max_depth, number_of_trees,
     n_subfeatures=0, min_samples_leaf = 5, min_samples_split = 2,
-    min_purity_increase = 0.0, pruning_purity = 1.0)
+    min_purity_increase = 0.0, pruning_purity = 1.0,
+    algo = "General")
 
-    yi = deepcopy(y_in)
-    Xi = deepcopy(X_in)
+    y = deepcopy(y_in)
+    X = deepcopy(X_in)
+    yi = deepcopy(y)
+    Xi = deepcopy(X)
 
     # Initialize Error
     ri = 0
@@ -39,7 +42,7 @@ function fit(y_in, X_in, lr, max_depth, number_of_trees,
     
     # Initialize Predictions with Average
     predf = reshape(zeros(n), :, 1)
-    predf .= mean(yi)
+    predf .= mean(y)
     
     # Number of Iterations
     iters = number_of_trees
@@ -51,6 +54,12 @@ function fit(y_in, X_in, lr, max_depth, number_of_trees,
     predictions = zeros(iters,n)
     
     for i=1:iters
+
+        if algo == "Stochastic"
+            #select random subset of the Xs and ys
+            Xi, yi, index_sel, check = random_subset_selection(X, y, k, indicies)
+        end
+
         # Fit the Decision Tree
         model = DecisionTree.build_tree(yi, Xi,
                        n_subfeatures,
