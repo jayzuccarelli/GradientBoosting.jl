@@ -23,9 +23,7 @@ function random_subset_selection(X_imp, y_imp, k, index_rm)
     train_Xs = X_shuffled[1:k,:]
     index_selected = index_shuffled[1:k]
 
-    sanity_check = (size(train_Xs, 1) == k)
-
-    return train_Xs, train_ys, index_selected, sanity_check
+    return train_Xs, train_ys, index_selected
 end
 
 function fit(y_in, X_in, lr, max_depth, number_of_trees)
