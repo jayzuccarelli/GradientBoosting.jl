@@ -26,26 +26,20 @@ function random_subset_selection(X_imp, y_imp, k, index_rm)
     return train_Xs, train_ys, index_selected
 end
 
-function fit(y_in, X_in, lr, max_depth, number_of_trees)
+function fit(y_in, X_in, lr, max_depth, number_of_trees,
+    n_subfeatures=0, min_samples_leaf = 5, min_samples_split = 2,
+    min_purity_increase = 0.0, pruning_purity = 1.0)
 
     yi = deepcopy(y_in)
     Xi = deepcopy(X_in)
-    
-    # Parameters
-    n_subfeatures = 0
-    max_depth = max_depth
-    min_samples_leaf = 5
-    min_samples_split = 2
-    min_purity_increase = 0.0
-    pruning_purity = 1.0
 
     # Initialize Error
     ri = 0
     n = length(yi)
     
     # Initialize Predictions with Average
-    predf = reshape(zeros(n), :, 1);
-    predf .= mean(yi);
+    predf = reshape(zeros(n), :, 1)
+    predf .= mean(yi)
     
     # Number of Iterations
     iters = number_of_trees
