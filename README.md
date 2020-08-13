@@ -11,3 +11,6 @@ Pkg.add("GradientBoosting")
 ```julia
 using GradientBoosting
 ```
+## Using the Package
+train_predictions, gb_models = GradientBoosting.fit(y_trn, X_trn, lr, max_depth, number_of_trees)  # In Sample
+test_predictions = GradientBoosting.predict(y_tst, X_tst, lr, gb_models)  # Out of Sample
