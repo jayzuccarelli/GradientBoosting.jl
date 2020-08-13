@@ -9,7 +9,7 @@ using Plots
 using Random
 using StatsBase
 using StatsPlots
-include("../src/GradientBoosting.jl")
+using GradientBoosting
 
 
 data = CSV.read("test/forestfires.csv", header = false)
