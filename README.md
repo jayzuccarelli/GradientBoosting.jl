@@ -15,6 +15,7 @@ using GradientBoosting
 ```julia
 # Train the model
 train_predictions, gb_models = GradientBoosting.fit(y_trn, X_trn, lr, max_depth, number_of_trees)
+
 # Predict on test data
 test_predictions = GradientBoosting.predict(y_tst, X_tst, lr, gb_models)
 ```
