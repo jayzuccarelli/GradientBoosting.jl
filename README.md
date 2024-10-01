@@ -1,5 +1,4 @@
 # GradientBoosting
-[![GitHub version](https://badge.fury.io/gh/ezuccarelli%2FGradientBoosting.jl.svg)](https://badge.fury.io/gh/ezuccarelli%2FGradientBoosting.jl)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](./LICENSE.md)
 
 The Julia implementation of <a href=https://en.wikipedia.org/wiki/Gradient_Boosting>Gradient Boosting</a>.
